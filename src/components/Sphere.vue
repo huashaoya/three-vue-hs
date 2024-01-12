@@ -5,16 +5,14 @@
 import * as THREE from "three";
 
 export default {
-  name: "Cube",
+  name: "Sphere",
   data() {
     return {
-      cube:null
+      sphere:null
     };
   },
   props: {
-    w: Number,
-    h: Number,
-    d: Number,
+    r: Number,
     x: Number,
     y: Number,
     z: Number,
@@ -27,17 +25,17 @@ export default {
   },
   methods: {
     initCube() {
-      const geometry = new THREE.BoxGeometry(this.w, this.h, this.d);
+      const geometry = new THREE.SphereGeometry(this.r);
       const material = new THREE.MeshBasicMaterial({ color: this.color });
-      this.cube = new THREE.Mesh(geometry, material);
-      this.cube.position.x = this.x;
-      this.cube.position.y = this.y;
-      this.cube.position.z = this.z;
+      this.sphere = new THREE.Mesh(geometry, material);
+      this.sphere.position.x = this.x;
+      this.sphere.position.y = this.y;
+      this.sphere.position.z = this.z;
       // 获取父组件传递的场景
       const parentScene = this.$parent.scene;
       // 将立方体添加到父组件传递的场景中
       if (parentScene) {
-        parentScene.add(this.cube);
+        parentScene.add(this.sphere);
       }
     },
   },

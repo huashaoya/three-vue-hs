@@ -1,6 +1,5 @@
-<!-- World.vue -->
 <template>
-  <div ref="container">
+  <div ref="container" id="h-world">
     <slot></slot>
   </div>
 </template>
@@ -10,14 +9,19 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { toRaw } from "vue";
 export default {
+  name: "World",
   data() {
     return {
       scene: null,
       camera: null,
       renderer: null,
-      cubesCount: 2,
-      cube: null,
     };
+  },
+  props:{
+    bg:{
+      type:String,
+      default:'transparent'
+    }
   },
   mounted() {
     this.init();
@@ -25,21 +29,33 @@ export default {
   },
   methods: {
     init() {
+      let worldDom=document.getElementById('h-world')
+      let width=worldDom.offsetWidth
+      let height=worldDom.offsetHeight
+
+      //场景
       this.scene = new THREE.Scene();
+     
+      this.scene.background= (this.bg=='transparent'?new THREE.Color(null): new THREE.Color(this.bg))
+
+      //相机
       this.camera = new THREE.PerspectiveCamera(
         75,
-        window.innerWidth / window.innerHeight,
+        width / height,
         0.1,
         1000
       );
       this.camera.position.z = 5;
+
+      //渲染器
       this.renderer = new THREE.WebGLRenderer();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setSize(width, height);
       this.$refs.container.appendChild(this.renderer.domElement);
-        // 初始化控制器
-        const controls = new OrbitControls(this.camera, this.renderer.domElement);
-        // 设置控制器阻尼
-        controls.enableDamping = true
+
+      // 控制器
+      const controls = new OrbitControls(this.camera, this.renderer.domElement);
+      controls.enableDamping = true;
+
     },
     animate() {
       requestAnimationFrame(this.animate);
@@ -50,10 +66,8 @@ export default {
 </script>
 
 <style>
-#container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+#h-world {
+  width:100%;
+  height:100%;
 }
 </style>

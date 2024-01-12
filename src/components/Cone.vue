@@ -5,16 +5,15 @@
 import * as THREE from "three";
 
 export default {
-  name: "Cube",
+  name: "Cone",
   data() {
     return {
-      cube:null
+      cone:null
     };
   },
   props: {
-    w: Number,
+    r: Number,
     h: Number,
-    d: Number,
     x: Number,
     y: Number,
     z: Number,
@@ -27,17 +26,16 @@ export default {
   },
   methods: {
     initCube() {
-      const geometry = new THREE.BoxGeometry(this.w, this.h, this.d);
+      const geometry = new THREE.ConeGeometry(this.r, this.h);
       const material = new THREE.MeshBasicMaterial({ color: this.color });
-      this.cube = new THREE.Mesh(geometry, material);
-      this.cube.position.x = this.x;
-      this.cube.position.y = this.y;
-      this.cube.position.z = this.z;
-      // 获取父组件传递的场景
+      this.cone = new THREE.Mesh(geometry, material);
+      this.cone.position.x = this.x;
+      this.cone.position.y = this.y;
+      this.cone.position.z = this.z;
+    
       const parentScene = this.$parent.scene;
-      // 将立方体添加到父组件传递的场景中
       if (parentScene) {
-        parentScene.add(this.cube);
+        parentScene.add(this.cone);
       }
     },
   },
