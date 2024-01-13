@@ -21,13 +21,13 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.initCube();
+      this.init();
     });
   },
   methods: {
-    initCube() {
+    init() {
       const geometry = new THREE.PlaneGeometry(this.w, this.h);
-      const material = new THREE.MeshBasicMaterial({ color: this.color });
+      const material = this.$parent.pbr?new THREE.MeshStandardMaterial({ color: this.color }):new THREE.MeshBasicMaterial({ color: this.color });
       this.plane = new THREE.Mesh(geometry, material);
       this.plane.position.x = this.x;
       this.plane.position.y = this.y;

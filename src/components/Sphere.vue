@@ -20,13 +20,13 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.initCube();
+      this.init();
     });
   },
   methods: {
-    initCube() {
+    init() {
       const geometry = new THREE.SphereGeometry(this.r);
-      const material = new THREE.MeshBasicMaterial({ color: this.color });
+      const material = this.$parent.pbr?new THREE.MeshStandardMaterial({ color: this.color }):new THREE.MeshBasicMaterial({ color: this.color });
       this.sphere = new THREE.Mesh(geometry, material);
       this.sphere.position.x = this.x;
       this.sphere.position.y = this.y;
