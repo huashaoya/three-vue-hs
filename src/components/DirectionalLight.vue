@@ -4,7 +4,7 @@
 import * as THREE from "three";
 
 export default {
-  name: "AmbientLight",
+  name: "DirectionalLight",
   data() {
     return {
       light: null,
@@ -19,6 +19,9 @@ export default {
       type: String,
       default: "white",
     },
+    x: Number,
+    y: Number,
+    z: Number,
   },
   mounted() {
     this.$nextTick(() => {
@@ -27,8 +30,9 @@ export default {
   },
   methods: {
     init() {
-      this.light = new THREE.AmbientLight(this.color, this.intensity); // soft white light
-
+      this.light = new THREE.DirectionalLight(this.color , this.intensity);
+      this.light.position.set(this.x, this.y, this.z);
+      this.light.castShadow = true;
       // 获取父组件传递的场景
       const parentScene = this.$parent.scene;
       // 将立方体添加到父组件传递的场景中

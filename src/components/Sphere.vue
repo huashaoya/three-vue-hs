@@ -1,5 +1,4 @@
-<template>
-</template>
+<template></template>
 
 <script>
 import * as THREE from "three";
@@ -8,14 +7,38 @@ export default {
   name: "Sphere",
   data() {
     return {
-      sphere:null
+      element: null,
     };
   },
   props: {
-    r: Number,
-    x: Number,
-    y: Number,
-    z: Number,
+    r: {
+      type: Number,
+      default: 1,
+    },
+    x: {
+      type: Number,
+      default: 0,
+    },
+    y: {
+      type: Number,
+      default: 0,
+    },
+    z: {
+      type: Number,
+      default: 0,
+    },
+    rx: {
+      type: Number,
+      default: 0,
+    },
+    ry: {
+      type: Number,
+      default: 0,
+    },
+    rz: {
+      type: Number,
+      default: 0,
+    },
     color: String,
   },
   mounted() {
@@ -26,16 +49,21 @@ export default {
   methods: {
     init() {
       const geometry = new THREE.SphereGeometry(this.r);
-      const material = this.$parent.pbr?new THREE.MeshStandardMaterial({ color: this.color }):new THREE.MeshBasicMaterial({ color: this.color });
-      this.sphere = new THREE.Mesh(geometry, material);
-      this.sphere.position.x = this.x;
-      this.sphere.position.y = this.y;
-      this.sphere.position.z = this.z;
-      // 获取父组件传递的场景
+      const material = this.$parent.pbr
+        ? new THREE.MeshStandardMaterial({ color: this.color })
+        : new THREE.MeshBasicMaterial({ color: this.color });
+      this.element = new THREE.Mesh(geometry, material);
+      this.element.position.set(this.x, this.y, this.z);
+      this.element.rotation.set(this.rx, this.ry, this.rz);
+
+      if (this.$parent.pbr) {
+        this.element.castShadow = true;
+        this.element.receiveShadow = true;
+      }
+
       const parentScene = this.$parent.scene;
-      // 将立方体添加到父组件传递的场景中
       if (parentScene) {
-        parentScene.add(this.sphere);
+        parentScene.add(this.element);
       }
     },
   },

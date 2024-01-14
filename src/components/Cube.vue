@@ -8,37 +8,60 @@ export default {
   name: "Cube",
   data() {
     return {
-      cube:null
+      element:null
     };
   },
   props: {
     w: Number,
     h: Number,
     d: Number,
-    x: Number,
-    y: Number,
-    z: Number,
+    x: {
+      type: Number,
+      default: 0,
+    },
+    y: {
+      type: Number,
+      default: 0,
+    },
+    z: {
+      type: Number,
+      default: 0,
+    },
+    rx: {
+      type: Number,
+      default: 0,
+    },
+    ry: {
+      type: Number,
+      default: 0,
+    },
+    rz: {
+      type: Number,
+      default: 0,
+    },
     color: String,
   },
   mounted() {
     this.$nextTick(() => {
-      this.initCube();
+      this.init();
     });
   },
   methods: {
-    initCube() {
+    init() {
       const geometry = new THREE.BoxGeometry(this.w, this.h, this.d);
       const material = this.$parent.pbr?new THREE.MeshStandardMaterial({ color: this.color }):new THREE.MeshBasicMaterial({ color: this.color });
-      this.cube = new THREE.Mesh(geometry, material);
-      this.cube.position.x = this.x;
-      this.cube.position.y = this.y;
-      this.cube.position.z = this.z;
-      this.cube.castShadow=true
-      // 获取父组件传递的场景
+      this.element = new THREE.Mesh(geometry, material);
+      this.element.position.set(this.x,this.y,this.z)
+      this.element.rotation.set(this.rx,this.ry,this.rz)
+
+      if(this.$parent.pbr){
+        this.element.castShadow = true;
+        this.element.receiveShadow = true;
+      }
+
       const parentScene = this.$parent.scene;
-      // 将立方体添加到父组件传递的场景中
       if (parentScene) {
-        parentScene.add(this.cube);
+        parentScene.add(this.element);
       }
     },
   },

@@ -52,13 +52,18 @@ export default {
       //渲染器
       this.renderer = new THREE.WebGLRenderer();
       this.renderer.setSize(width, height);
-      // 开启场景中的阴影贴图
-      //this.renderer.shadowMap.enabled = true;
+
       this.$refs.container.appendChild(this.renderer.domElement);
 
       // 控制器
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
+
+      //如果开启了pbr
+      if (this.pbr) {
+        // 开启场景中的阴影贴图
+        this.renderer.shadowMap.enabled = true;
+      }
     },
     animate() {
       requestAnimationFrame(this.animate);
