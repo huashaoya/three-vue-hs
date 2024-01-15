@@ -2,9 +2,9 @@
  <button @click="a">+</button>
   <div class="wrapper">
     <div class="box">
-      <World bg="black" pbr>
+      <World bg="black" pbr physics>
         <AxesHelper />
-        <Cube :w="1" :h="1" :d="1" :x="x" :y="0" :z="0" :rx="1" color="green" />
+        <!-- <Cube :w="1" :h="1" :d="1" :x="x" :y="0" :z="0" :rx="1" color="green" /> -->
         <DirectionalLight :x="0" :y="5" :z="0" :intensity="2" />
         <AmbientLight :intensity="0.5" />
         <!-- <Cone :r="1" :h="1" :x="0" :y="0" :z="0" color="green" /> -->
@@ -18,7 +18,7 @@
           :rx="-Math.PI / 2"
           color="white"
         />
-        <Sphere :r="2" :x="0" :y="-3.5" :z="0" color="green" />
+        <Sphere :r="1" :x="0" :y="3" :z="0" color="green" />
         <!-- <Circle :r="2" :x="0" :y="0" :z="0" color="green"/> -->
       </World>
     </div>

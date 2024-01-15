@@ -6,6 +6,7 @@
 
 <script>
 import * as THREE from "three";
+import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { toRaw } from "vue";
 export default {
@@ -16,6 +17,8 @@ export default {
       camera: null,
       renderer: null,
       controls: null,
+      physicsWorld: null,
+      elements:[]
     };
   },
   props: {
@@ -26,6 +29,10 @@ export default {
     pbr: {
       type: Boolean,
       default: false,
+    },
+    physics: {
+      type: Boolean,
+      dafault: false,
     },
   },
   mounted() {
@@ -64,9 +71,25 @@ export default {
         // 开启场景中的阴影贴图
         this.renderer.shadowMap.enabled = true;
       }
+
+      //如果开启了物理
+      if (this.physics) {
+        this.physicsWorld = new CANNON.World({ gravity: 9.8 });
+      }
     },
     animate() {
       requestAnimationFrame(this.animate);
+      //如果开启了物理
+      if (this.physics) {
+        this.physicsWorld.step(1 / 60);
+        console.log(this.physicsWorld)
+        // 同步所有与物理模拟相关的 Three.js 对象的位置和旋转
+        this.elements.forEach(elements => {
+          if (elements.updateFromPhysics) {
+            elements.updateFromPhysics();
+          }
+        });
+      }
       this.controls.update();
       this.renderer.render(toRaw(this.scene), this.camera);
     },
