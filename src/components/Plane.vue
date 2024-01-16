@@ -2,12 +2,14 @@
 
 <script>
 import * as THREE from "three";
+import * as CANNON from "cannon-es";
 
 export default {
   name: "Plane",
   data() {
     return {
-      plane: null,
+      element: null,
+      body: null,
     };
   },
   props: {
@@ -50,19 +52,42 @@ export default {
       const material = this.$parent.pbr
         ? new THREE.MeshStandardMaterial({ color: this.color })
         : new THREE.MeshBasicMaterial({ color: this.color });
-      this.plane = new THREE.Mesh(geometry, material);
-      this.plane.position.set(this.x,this.y,this.z)
-      this.plane.rotation.set(this.rx, this.ry, this.rz);
+      this.element = new THREE.Mesh(geometry, material);
+      this.element.position.set(this.x, this.y, this.z);
+      this.element.rotation.set(this.rx, this.ry, this.rz);
+      if (this.$parent.pbr) {
+        this.element.castShadow = true;
+        this.element.receiveShadow = true;
+      }
 
-      if(this.$parent.pbr){
-        this.plane.castShadow = true;
-        this.plane.receiveShadow = true;
+      //如果开启了物理
+      if (this.$parent.physics) {
+        const shape = new CANNON.Plane();
+        const material = new CANNON.Material();
+        this.body = new CANNON.Body({
+          shape: shape,
+          position: new CANNON.Vec3(this.x, this.y, this.z),
+          mass: 0,
+          material: material,
+        });
+        this.body.quaternion.setFromEuler(this.rx, this.ry, this.rz);
+        const physicsWorld = this.$parent.physicsWorld;
+        if (physicsWorld) {
+          physicsWorld.addBody(this.body);
+          // 将 Cube 组件添加到父组件的 cubes 数组中
+          this.$parent.elements.push(this);
+          //console.log(this.body.position)
+        }
       }
 
       const parentScene = this.$parent.scene;
       if (parentScene) {
-        parentScene.add(this.plane);
+        parentScene.add(this.element);
       }
+    },
+    updateFromPhysics() {
+      this.element.position.copy(this.body.position);
+      this.element.quaternion.copy(this.body.quaternion);
     },
   },
 };

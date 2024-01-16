@@ -18,7 +18,8 @@ export default {
       renderer: null,
       controls: null,
       physicsWorld: null,
-      elements:[]
+      elements:[],
+      clock:null
     };
   },
   props: {
@@ -54,7 +55,7 @@ export default {
 
       //相机
       this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-      this.camera.position.z = 5;
+      this.camera.position.z = 10;
 
       //渲染器
       this.renderer = new THREE.WebGLRenderer();
@@ -74,15 +75,17 @@ export default {
 
       //如果开启了物理
       if (this.physics) {
-        this.physicsWorld = new CANNON.World({ gravity: 9.8 });
+        this.physicsWorld =  new CANNON.World();
+        this.physicsWorld.gravity.set(0, -9.8, 0);
       }
+      this.clock=new THREE.Clock()
     },
     animate() {
       requestAnimationFrame(this.animate);
       //如果开启了物理
       if (this.physics) {
-        this.physicsWorld.step(1 / 60);
-        console.log(this.physicsWorld)
+        this.physicsWorld.step(1 / 120,this.clock.getDelta(),3);
+
         // 同步所有与物理模拟相关的 Three.js 对象的位置和旋转
         this.elements.forEach(elements => {
           if (elements.updateFromPhysics) {
@@ -90,7 +93,7 @@ export default {
           }
         });
       }
-      this.controls.update();
+      //this.controls.update();
       this.renderer.render(toRaw(this.scene), this.camera);
     },
   },

@@ -4,7 +4,6 @@
     <div class="box">
       <World bg="black" pbr physics>
         <AxesHelper />
-        <!-- <Cube :w="1" :h="1" :d="1" :x="x" :y="0" :z="0" :rx="1" color="green" /> -->
         <DirectionalLight :x="0" :y="5" :z="0" :intensity="2" />
         <AmbientLight :intensity="0.5" />
         <!-- <Cone :r="1" :h="1" :x="0" :y="0" :z="0" color="green" /> -->
@@ -18,7 +17,12 @@
           :rx="-Math.PI / 2"
           color="white"
         />
-        <Sphere :r="1" :x="0" :y="3" :z="0" color="green" />
+        <Sphere :r="1" :x="0" :y="8" :z="0" color="red" />
+         <Cube :w="5" :h="0.5" :d="1" :x="0" :y="5" :z="0" :rx="0" :rz="0.5" color="green"/>
+         <Cube :w="5" :h="0.5" :d="1" :x="-4" :y="0" :z="0" :rx="0" :rz="-0.5" color="green"/>
+         <Sphere :r="1" :x="2" :y="-4" :z="0" color="yellow" />
+         <Cube :w="1" :h="0.5" :d="5" :x="-2" :y="-4" :z="0" :rx="0" :rz="0" color="green"/>
+        <!-- <Sphere :r="1" :x="1.5" :y="5" :z="0" color="green" /> -->
         <!-- <Circle :r="2" :x="0" :y="0" :z="0" color="green"/> -->
       </World>
     </div>
@@ -85,7 +89,7 @@ export default {
 .box {
   margin: 80px;
   border: 2px solid black;
-  width: 400px;
-  height: 400px;
+  width: 800px;
+  height: 500px;
 }
 </style>

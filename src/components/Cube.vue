@@ -3,12 +3,14 @@
 
 <script>
 import * as THREE from "three";
+import * as CANNON from "cannon-es";
 
 export default {
   name: "Cube",
   data() {
     return {
-      element:null
+      element:null,
+      body:null
     };
   },
   props: {
@@ -39,6 +41,10 @@ export default {
       type: Number,
       default: 0,
     },
+     mass: {
+      type: Number,
+      default: 0,
+    },
     color: String,
   },
   mounted() {
@@ -59,10 +65,34 @@ export default {
         this.element.receiveShadow = true;
       }
 
+ //如果开启了物理
+      if (this.$parent.physics) {
+        const shape = new CANNON.Box(new CANNON.Vec3(this.w/2, this.h/2, this.d/2));
+        const material = new CANNON.Material();
+        this.body = new CANNON.Body({
+          shape: shape,
+          position: new CANNON.Vec3(this.x, this.y, this.z),
+          mass: this.mass,
+          material: material,
+        });
+        this.body.quaternion.setFromEuler(this.rx, this.ry, this.rz) 
+        const physicsWorld = this.$parent.physicsWorld;
+        if (physicsWorld) {
+          physicsWorld.addBody(this.body);
+          // 将 Cube 组件添加到父组件的 cubes 数组中
+          this.$parent.elements.push(this);
+           //console.log(this.body.position)
+        }
+      }
+
       const parentScene = this.$parent.scene;
       if (parentScene) {
         parentScene.add(this.element);
       }
+    },
+    updateFromPhysics() {
+      this.element.position.copy(this.body.position);
+      this.element.quaternion.copy(this.body.quaternion);
     },
   },
 };
