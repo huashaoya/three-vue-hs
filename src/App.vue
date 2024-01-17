@@ -42,10 +42,10 @@ import Cylinder from "./components/Cylinder.vue";
 import Plane from "./components/Plane.vue";
 import Sphere from "./components/Sphere.vue";
 import Circle from "./components/Circle.vue";
-import AxesHelper from "./components/AxesHelper.vue";
+import AxesHelper from "./components/helper/AxesHelper.vue";
 import GLTFModel from "./components/GLTFModel.vue";
-import AmbientLight from "./components/AmbientLight.vue";
-import DirectionalLight from "./components/DirectionalLight.vue";
+import AmbientLight from "./components/light/AmbientLight.vue";
+import DirectionalLight from "./components/light/DirectionalLight.vue";
 
 export default {
   name: "App",
