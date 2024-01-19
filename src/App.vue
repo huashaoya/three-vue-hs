@@ -2,13 +2,13 @@
  <button @click="a">+</button>
   <div class="wrapper">
     <div class="box">
-      <World bg="black" pbr physics>
+      <World bg="black">
         <AxesHelper />
         <DirectionalLight :x="0" :y="5" :z="0" :intensity="2" />
         <AmbientLight :intensity="0.5" />
         <!-- <Cone :r="1" :h="1" :x="0" :y="0" :z="0" color="green" /> -->
         <!-- <Cylinder :rt="1" :rb="1" :h="1" :x="0" :y="0" :z="0" color="yellow" /> -->
-        <Plane
+        <!-- <Plane
           :w="8"
           :h="8"
           :x="0"
@@ -21,9 +21,10 @@
          <Cube :w="5" :h="0.5" :d="1" :x="0" :y="5" :z="0" :rx="0" :rz="0.5" color="green"/>
          <Cube :w="5" :h="0.5" :d="1" :x="-4" :y="0" :z="0" :rx="0" :rz="-0.5" color="green"/>
          <Sphere :r="1" :x="2" :y="-4" :z="0" color="yellow" />
-         <Cube :w="1" :h="0.5" :d="5" :x="-2" :y="-4" :z="0" :rx="0" :rz="0" color="green"/>
+         <Cube :w="1" :h="0.5" :d="5" :x="-2" :y="-4" :z="0" :rx="0" :rz="0" color="green"/> -->
         <!-- <Sphere :r="1" :x="1.5" :y="5" :z="0" color="green" /> -->
         <!-- <Circle :r="2" :x="0" :y="0" :z="0" color="green"/> -->
+        <GLTFModel src="./box.gltf"/>
       </World>
     </div>
     <!-- <div class="box">

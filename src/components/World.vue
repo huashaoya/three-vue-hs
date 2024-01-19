@@ -7,6 +7,7 @@
 <script>
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { toRaw } from "vue";
 export default {
@@ -18,8 +19,9 @@ export default {
       renderer: null,
       controls: null,
       physicsWorld: null,
-      elements:[],
-      clock:null
+      elements: [],
+      clock: null,
+      animationMixer:null
     };
   },
   props: {
@@ -46,6 +48,9 @@ export default {
       let width = worldDom.offsetWidth;
       let height = worldDom.offsetHeight;
 
+      //时钟
+      this.clock = new THREE.Clock();
+      
       //场景
       this.scene = new THREE.Scene();
       this.scene.background =
@@ -67,6 +72,9 @@ export default {
       this.controls = new OrbitControls(this.camera, this.renderer.domElement);
       this.controls.enableDamping = true;
 
+      //动画混合器
+      this.animationMixer = new THREE.AnimationMixer(this.scene);
+
       //如果开启了pbr
       if (this.pbr) {
         // 开启场景中的阴影贴图
@@ -75,25 +83,26 @@ export default {
 
       //如果开启了物理
       if (this.physics) {
-        this.physicsWorld =  new CANNON.World();
+        this.physicsWorld = new CANNON.World();
         this.physicsWorld.gravity.set(0, -9.8, 0);
       }
-      this.clock=new THREE.Clock()
+   
     },
     animate() {
+      let deltaTime = this.clock.getDelta();
       requestAnimationFrame(this.animate);
+
       //如果开启了物理
       if (this.physics) {
-        this.physicsWorld.step(1 / 120,this.clock.getDelta(),3);
-
+        this.physicsWorld.step(1 / 120, deltaTime, 3);
         // 同步所有与物理模拟相关的 Three.js 对象的位置和旋转
-        this.elements.forEach(elements => {
+        this.elements.forEach((elements) => {
           if (elements.updateFromPhysics) {
             elements.updateFromPhysics();
           }
         });
-      }
-      //this.controls.update();
+      }   
+      this.animationMixer.update( deltaTime);
       this.renderer.render(toRaw(this.scene), this.camera);
     },
   },
